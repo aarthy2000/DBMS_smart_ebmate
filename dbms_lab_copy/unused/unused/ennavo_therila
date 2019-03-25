@@ -1,0 +1,31 @@
+delimiter //
+create procedure MAxDisplay(IN name varchar(50))
+BEGIN
+DECLARE maxApp numeric(20,0);
+select max(workingHours) into maxApp from appliance where consumerID like name;
+select maxApp;
+end;//
+
+delimiter //
+create procedure checkData()
+BEGIN
+declare v_finished integer DEFAULT 0;
+declare a numeric(20,2);
+declare id numeric(20,0);
+DECLARE cu CURSOR FOR SELECT units,billID from bill;
+DECLARE CONTINUE HANDLER
+        FOR NOT FOUND SET v_finished = 1;
+        open cu;
+
+        hello : loop
+        IF v_finished = 1 THEN
+         LEAVE hello;
+         END IF;
+        fetch cu into a,id;
+        if (a<0)
+        THEN
+        update bill set units=0 where billID=id;
+        end if;
+        end loop hello;
+        close cu;
+        end ;//

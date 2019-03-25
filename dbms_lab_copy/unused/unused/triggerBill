@@ -1,0 +1,55 @@
+delimiter $$
+create procedure calculateBill()
+  begin
+  declare total numeric(10,2);
+  declare amt numeric(10);
+  set amt=40;
+  set total=0;
+  set total=amt*1.5;
+  select total;
+  end$$
+
+
+
+Delimiter //
+CREATE PROCEDURE fact(IN x INT)
+BEGIN
+DECLARE result INT;
+DECLARE i INT;
+SET result = 1;
+      SET i = 1;
+    WHILE i <= x DO
+    SET result = result * i;
+    SET i = i + 1;
+     END WHILE;
+    SELECT x AS Number, result as Factorial;
+     END//
+
+delimiter //
+create procedure CalculateBill(IN name varchar(50))
+BEGIN
+declare amt numeric(20,2);
+declare bunits numeric(20,2);
+set amt=0;
+set bunits=(select units from bill where consumerID like name);
+if bunits<100 Then
+update bill
+set amount=0 where consumerID like name;
+while bunits>100 do
+            if(bunits>100 and bunits<=200)
+                  Then
+                        set amt=amt + 100*1.5;
+                        set bunits =bunits -100;
+
+                else if(bunits>200 and bunits<=500)
+                Then
+                        set amt=amt+300*3.5;
+                        set bunits=bunits - 300;
+
+                else if(bunits>500)
+                Then
+                        set amt= amt + 500*6.6;
+                        set bunits=bunits-500;
+
+end//
+delimiter ;

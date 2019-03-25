@@ -1,0 +1,7 @@
+delimiter //
+create trigger paidBillDelete
+before delete on bill for each row
+begin
+insert into paidBill(estID,estAmount,estUnits,consumerID,staffID)
+values(old.billID,old.amount,old.units,old.consumerID,old.staffID);
+end;//

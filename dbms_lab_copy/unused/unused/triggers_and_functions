@@ -1,0 +1,40 @@
+--trigger2
+create trigger deleteOffice
+before delete on offices
+for each row
+delete from staff where pincode=old.locID;
+end;
+
+create trigger deleteUser
+before delete on users
+for each row
+delete from appliance where consumerID like old.username;
+end;
+
+delimiter $$
+create function checkDaysLeft(name numeric(20,0))
+  returns date DETERMINISTIC
+  begin
+  declare daysleft date;
+  declare f date;
+  declare s date;
+
+  set daysleft=(select deadline from bill where billID like name);
+  select daysleft;
+  return daysleft;
+  end;$$
+delimiter ;
+delimiter $$
+create function checkDaysLeft(name varchar(50))
+returns varchar(50)
+  begin
+  declare daysleft date;
+  declare f date;
+  declare s date;
+  declare namevar varchar(50);
+  set namevar='hello';
+  select CONCAT(namevar,name);
+  end;$$
+1
+
+set f=(select datediff(select deadline from bill where consumerID like name ));

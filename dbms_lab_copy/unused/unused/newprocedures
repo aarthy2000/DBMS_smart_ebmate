@@ -1,0 +1,14 @@
+DELIMITER //
+CREATE PROCEDURE ithuvera(IN countryName VARCHAR(255))
+ BEGIN
+ declare billedAmount numeric(10,2);
+ declare totalunits numeric(10,2);
+ set billedAmount=0;
+ set totalunits=0;
+ set totalunits=(SELECT units
+ FROM bill
+ WHERE consumerID = countryName);
+ set billedAmount=totalunits*1.5;
+ select billedAmount;
+ END //
+DELIMITER ;

@@ -1,0 +1,52 @@
+--new trigger bill
+
+--every time a bill item is specified , calculae the billing deadline
+create trigger velaseiven
+  before insert on bill for each row
+set new.deadline=(select adddate(new.billdate,interval 20 day));
+end;
+
+
+--before deleting a user's entry from the table , delete the applianvces of that customer and then delete the child record
+--before deleting an office detail, transfer all the employees working in that office to some other office
+
+
+--PL/SQL procedures
+--calculate bill for the account specified
+delimiter /
+create procedure calculate(IN in_name)
+  begin
+  declare punits numeric(10,2);
+  set punits=(select  units from bill where consumerID like in_name);
+  declare cost numeric(10,2);
+  set cost=0;
+  while punits > 0
+  do
+
+  if punits>100 and punits<=200
+  set cost=100*3.50;
+  set units=units-100;
+  else if punits>200 and punits<=500
+  set cost=300*4.60;
+  set units=units-300;
+  else if punits>500
+  set cost=500*4.60;
+  set units=units-300;
+
+
+
+
+   end/
+
+
+delimiter ;
+--check if thats time for the staff to cut tge electricity to a house that has exceeded the deadline
+--
+
+
+--PL/SQL functions
+--create estimated bill from the appliances given
+--i.e)
+--provided with the ideal working hours and wattage for the appliances, calculate the total ideal bill
+--Then , find the bill from the details provided by the user,
+--find the difference between these and show the result in a dialogue

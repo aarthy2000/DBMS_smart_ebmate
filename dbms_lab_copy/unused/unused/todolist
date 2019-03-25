@@ -1,0 +1,57 @@
+to-do list
+
+construct estimate.php
+
+-->first,populate the ideal_Appliances
+-->then
+-->using the appliances table find the total bill i.e)using applinae name,take wattage from ideal_appliances and calculate the
+the current bill, subtract from ideal_wattage*working hours
+-->display
+
+sql procedure to calculate the ideal_Appliance and appliance bill
+create function ideal_Amount
+
+sql function to find the difference and say how much to improve
+
+sql function
+from the appliances table ,take the applinace with max working hour and display
+delimiter //
+create function maximumAppliance(name varchar(50))
+returns INT
+BEGIN
+DECLARE v_finished INTEGER DEFAULT 0;
+declare iksum int;
+declare ksum int;
+DECLARE cu CURSOR FOR SELECT ideal_wh,wattage,name FROM ideal_appliances;
+DECLARE CONTINUE HANDLER
+        FOR NOT FOUND SET v_finished = 1;
+declare wh decimal(20,0);
+declare w decimal(10,2);
+declare name varchar(50);
+set ksum=0;
+set iksum=0;
+open cu;
+hello : loop
+IF v_finished = 1 THEN
+ LEAVE hello;
+ END IF;
+fetch cu into wh,w,name;
+ksum=(w * wh * 30 * 0.10 )/1000;
+ksum=ksum*6.87;
+CREATE TEMPORARY TABLE
+ IF NOT EXISTS buffer ( totalcost numeric(20,0));
+insert into buffer(totalcost) value(ksum);
+  select sum(totalcost) into iksum from buffer;
+end loop hello;
+close cu;
+  return iksum;
+  end;//
+
+
+declare wh numeric(20,0);
+create table temp
+select max(workingHours) into wh from appliance where conksumerID like 'E1123456' ;
+return wh;
+
+end;//
+php file needs to run the procedure only, no input

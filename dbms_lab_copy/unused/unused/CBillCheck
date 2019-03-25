@@ -1,0 +1,62 @@
+drop procedure CBillCheck;
+delimiter $$
+create procedure CBillCheck()
+BEGIN
+
+ DECLARE v_finished INTEGER DEFAULT 0;
+declare amt numeric(20,2);
+declare id numeric(20,0);
+declare temp numeric(20,2);
+declare bunits numeric(20,2);
+DECLARE cu CURSOR FOR SELECT units,billID FROM bill;
+DECLARE CONTINUE HANDLER
+        FOR NOT FOUND SET v_finished = 1;
+set amt=0;
+set bunits=0;
+open cu;
+hello : loop
+fetch cu into temp,id;
+IF v_finished = 1 THEN
+ LEAVE hello;
+ END IF;
+set amt=0;
+set bunits=temp;
+if temp<100 Then
+update bill
+set amount=0 where billID like id ;
+else
+while bunits>0 DO
+      
+        if(bunits>=0 and bunits<=100)
+        Then
+          set amt = amt + 0;
+          set bunits = bunits - 100;
+        elseif ( bunits > 100 and bunits <= 200) Then
+                        set amt = amt + 100*2;
+                        set bunits = bunits - 100;
+
+        elseif (bunits > 200 and bunits <= 300) Then
+                        set amt = amt + 100*3;
+                        set bunits = bunits - 100;
+
+        elseif (bunits > 300 and bunits <= 400) Then
+                                set amt = amt + 100*3;
+                                set bunits = bunits - 100;
+
+        elseif (bunits > 400 and bunits <= 500) Then
+                                        set amt = amt + 100*3;
+                                        set bunits = bunits - 100;
+
+        elseif (bunits > 500) Then
+                        set amt = amt + 500*6.6;
+                        set bunits = bunits + 100;
+        end if;
+end WHILE;
+update bill
+  set amount=amt+30 where billID like id;
+end if;
+
+end loop hello;
+close cu;
+end$$
+delimiter ;
